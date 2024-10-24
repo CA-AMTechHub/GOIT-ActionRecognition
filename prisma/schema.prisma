@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Detection {
+  id                 Int       @id @default(autoincrement())  // id como clave primaria con autoincremento
+  timestamp          DateTime?                                 // Timestamp sin zona horaria, opcional
+  video_path         String?                                   // Ruta de video como texto, opcional
+  object_type        String?                                   // Tipo de objeto detectado como texto, opcional
+  detection_tag      String?   @db.VarChar(40)                 // Etiqueta de detección, varchar(40), opcional
+  action_description String?                                   // Descripción de la acción como texto, opcional
+  confidence         Float?                                    // Nivel de confianza como real (float), opcional
+  bounding_box       Json?                                     // Caja delimitadora como JSON, opcional
+  frame_number       Int?                                      // Número de frame, opcional
+  video_segment      Int?                                      // Segmento de video, opcional
+
+  @@index([id])  // Índice primario en la columna id
+}
